@@ -65,9 +65,9 @@ After cloning this repository:
 
 //TODO
 
-## Run tests
+## Run the tests
 
-//TODO
+
 
 ## Run the api with Docker
 
