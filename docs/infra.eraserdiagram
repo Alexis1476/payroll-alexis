@@ -1,0 +1,10 @@
+api-end-user [icon: user]
+    java-environment [icon: java]{
+      application-server [icon: tomcat]{
+          ms-payroll-get [icon: spring]
+          h2[icon: database]
+      }
+    }
+// relations
+api-end-user   - ms-payroll-get : localhost:8080/api/v1/employees
+ms-payroll-get - h2 : in-memory

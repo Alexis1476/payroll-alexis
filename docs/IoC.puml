@@ -1,0 +1,23 @@
+@startuml
+title Dependency Injection (Constructor Injection)
+skinparam classAttributeIconSize 0
+
+class EmployeeController {
+  - repository : EmployeeRepository
+  + EmployeeController(repository)
+  + all()
+  + one(id)
+}
+
+interface EmployeeRepository {
+  + findAll()
+  + findById(id)
+}
+
+class SpringContainer
+
+SpringContainer --> EmployeeRepository : creates
+SpringContainer --> EmployeeController : injects\nvia constructor
+
+EmployeeController --> EmployeeRepository : uses
+@enduml

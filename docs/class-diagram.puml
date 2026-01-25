@@ -1,0 +1,40 @@
+@startuml
+title Payroll - Class Diagram
+skinparam classAttributeIconSize 0
+
+package payroll{
+
+    package Controllers{
+        class Employee{
+            - repository Repository.Employee;
+        }
+        class EmployeeNotFoundAdvice()
+        class EmployeeNotFoundException()
+    }
+
+    package Entities{
+        class Employee()
+    }
+
+    package Repositories{
+        class Employee()
+        class LoadDatabase()
+    }
+
+    class PayrollApplication{
+        + {static} main (args : string[])
+    }
+}
+
+package springframework{
+}
+
+package java.util.List{
+
+}
+
+' Relations
+payroll --> springframework
+
+
+@enduml
