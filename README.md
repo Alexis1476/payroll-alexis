@@ -67,6 +67,17 @@ After cloning this repository:
 
 ## Run the tests
 
+* For all tests classes
+
+```
+mvn test
+```
+
+* Only a specific class test
+
+```
+mvn -Dtest=EmployeeGetTest test
+```
 
 
 ## Run the api with Docker
