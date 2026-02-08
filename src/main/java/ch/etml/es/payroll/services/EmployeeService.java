@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class EmployeeServicePost {
+public class EmployeeService {
 
     private static EmployeeRepository repository = null;
 
-    public EmployeeServicePost(EmployeeRepository repository) {
-        EmployeeServicePost.repository = repository;
+    public EmployeeService(EmployeeRepository repository) {
+        EmployeeService.repository = repository;
     }
 
     public static Employee hire(Employee employee) {

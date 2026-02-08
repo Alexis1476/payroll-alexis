@@ -1,9 +1,11 @@
-package ch.etml.es.payroll.Controllers;
+package ch.etml.es.payroll.controllers;
 
-import ch.etml.es.payroll.Repositories.EmployeeRepository;
-import ch.etml.es.payroll.Entities.Employee;
+import ch.etml.es.payroll.repositories.EmployeeRepository;
+import ch.etml.es.payroll.entities.Employee;
+import ch.etml.es.payroll.services.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -21,7 +23,7 @@ public class EmployeeController {
     /* curl sample :
     curl -X GET localhost:8080/api/v1/employees | jq
     */
-    @GetMapping("/")
+    @GetMapping("")
     List<Employee> all(){
         return repository.findAll();
     }
@@ -42,10 +44,16 @@ public class EmployeeController {
     */
     @PostMapping("")
     public ResponseEntity<Employee> hireEmployee(@RequestBody Employee employee) {
-        Employee created = EmployeeServicePost.hire(employee);
+        Employee created = EmployeeService.hire(employee);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
 
         return ResponseEntity
-                .created(URI.create("/api/v1/employees/" + created.getId()))
+                .created(location)
                 .body(created);
     }
 }

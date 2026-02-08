@@ -1,7 +1,10 @@
-package ch.etml.es.payroll.Repositories;
+package ch.etml.es.payroll.repositories;
 
+import ch.etml.es.payroll.entities.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<ch.etml.es.payroll.Entities.Employee, Long>{
+import java.util.Optional;
 
+public interface EmployeeRepository extends JpaRepository<ch.etml.es.payroll.entities.Employee, Long>{
+    Optional<Employee> findByName(String name);
 }
