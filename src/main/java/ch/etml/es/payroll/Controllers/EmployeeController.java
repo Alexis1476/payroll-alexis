@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@RequestMapping("v1/employees")
 public class EmployeeController {
 
     private final EmployeeRepository repository;
@@ -16,7 +17,7 @@ public class EmployeeController {
         this.repository = repository;
     }
 
-    @PostMapping("/api/v1/employees")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ch.etml.es.payroll.Entities.Employee create(@RequestBody ch.etml.es.payroll.Entities.Employee newEmployee) {
         if(repository.existsByName(newEmployee.getName()))
@@ -28,7 +29,7 @@ public class EmployeeController {
     /* curl sample :
     curl -X GET localhost:8080/api/v1/employees | jq
     */
-    @GetMapping("/api/v1/employees")
+    @GetMapping
     List<ch.etml.es.payroll.Entities.Employee> all() {
         return repository.findAll();
     }
@@ -36,7 +37,7 @@ public class EmployeeController {
     /* curl sample :
     curl -X GET localhost:8080/api/v1/employees/1
     */
-    @GetMapping("/api/v1/employees/{id}")
+    @GetMapping("/{id}")
     ch.etml.es.payroll.Entities.Employee one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
