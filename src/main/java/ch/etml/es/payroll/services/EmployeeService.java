@@ -4,10 +4,8 @@ import ch.etml.es.payroll.controllers.EmployeeAlreadyExistsException;
 import ch.etml.es.payroll.entities.Employee;
 import ch.etml.es.payroll.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class EmployeeService {
 
     private static EmployeeRepository repository = null;
