@@ -44,7 +44,7 @@ class EmployeePostTest {
         // WHEN
         ResponseEntity<Employee> response =
                 restTemplate.postForEntity(
-                        "/api/v1/employees",
+                        "/v1/employees",
                         request,
                         Employee.class
                 );
@@ -77,7 +77,7 @@ class EmployeePostTest {
         // WHEN
         ResponseEntity<String> response =
                 restTemplate.postForEntity(
-                        "/api/v1/employees",
+                        "/v1/employees",
                         request,
                         String.class
                 );

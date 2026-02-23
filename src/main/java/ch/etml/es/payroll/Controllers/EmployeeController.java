@@ -1,16 +1,18 @@
 package ch.etml.es.payroll.Controllers;
 
+import ch.etml.es.payroll.Entities.Employee;
 import ch.etml.es.payroll.Repositories.EmployeeRepository;
-import org.springframework.http.HttpStatus;
+import ch.etml.es.payroll.services.EmployeeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("v1/employees")
 public class EmployeeController {
-
     private final EmployeeRepository repository;
 
     EmployeeController(EmployeeRepository repository) {
@@ -18,19 +20,19 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    ch.etml.es.payroll.Entities.Employee create(@RequestBody ch.etml.es.payroll.Entities.Employee newEmployee) {
-        if(repository.existsByName(newEmployee.getName()))
-            throw new EmployeeAlreadyExistsException(newEmployee.getName());
+    ResponseEntity<Employee> create(@RequestBody Employee newEmployee) {
+        Employee savedEmployee = EmployeeService.hire(newEmployee);
 
-        return repository.save(newEmployee);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedEmployee.getId()).toUri();
+
+        return ResponseEntity.created(location).body(savedEmployee);
     }
 
     /* curl sample :
     curl -X GET localhost:8080/api/v1/employees | jq
     */
     @GetMapping
-    List<ch.etml.es.payroll.Entities.Employee> all() {
+    List<Employee> all() {
         return repository.findAll();
     }
 
@@ -38,7 +40,7 @@ public class EmployeeController {
     curl -X GET localhost:8080/api/v1/employees/1
     */
     @GetMapping("/{id}")
-    ch.etml.es.payroll.Entities.Employee one(@PathVariable Long id) {
+    Employee one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
