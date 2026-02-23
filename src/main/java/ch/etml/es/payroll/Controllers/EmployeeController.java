@@ -3,6 +3,7 @@ package ch.etml.es.payroll.Controllers;
 import ch.etml.es.payroll.Repositories.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,8 +18,11 @@ public class EmployeeController {
 
     @PostMapping("/api/v1/employees")
     @ResponseStatus(HttpStatus.CREATED)
-    ch.etml.es.payroll.Entities.Employee newEmployee(@RequestBody ch.etml.es.payroll.Entities.Employee Employee) {
-        return repository.save(Employee);
+    ch.etml.es.payroll.Entities.Employee create(@RequestBody ch.etml.es.payroll.Entities.Employee newEmployee) {
+        if(repository.existsByName(newEmployee.getName()))
+            throw new EmployeeAlreadyExistsException(newEmployee.getName());
+
+        return repository.save(newEmployee);
     }
 
     /* curl sample :
