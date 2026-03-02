@@ -13,10 +13,12 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(EmployeeRepository repository){
+    CommandLineRunner initDatabase(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository) {
         return args->{
-            log.info("Preloading " + repository.save(new ch.etml.es.payroll.entities.Employee("Bilbo Baggins", "burglar")));
-            log.info("Preloading " + repository.save(new ch.etml.es.payroll.entities.Employee("Frodo Baggins", "thief")));
+            log.info("Preloading " + employeeRepository.save(new ch.etml.es.payroll.entities.Employee("Bilbo Baggins", "burglar")));
+            log.info("Preloading " + employeeRepository.save(new ch.etml.es.payroll.entities.Employee("Frodo Baggins", "thief")));
+            log.info("Preloading " + departmentRepository.save(new ch.etml.es.payroll.entities.Department("MKT", "Marketing")));
+            log.info("Preloading " + departmentRepository.save(new ch.etml.es.payroll.entities.Department("SAS", "Sales")));
         };
     }
 }
