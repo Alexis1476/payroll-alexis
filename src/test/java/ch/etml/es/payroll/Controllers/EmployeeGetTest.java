@@ -49,7 +49,7 @@ class EmployeeGetTest {
         // WHEN
         ResponseEntity<Employee> response =
                 restTemplate.getForEntity(
-                        "/api/v1/employees/{id}",
+                        "/v1/employees/{id}",
                         Employee.class,
                         existingEmployee.getId()
                 );
@@ -71,7 +71,7 @@ class EmployeeGetTest {
         // WHEN
         ResponseEntity<List<Employee>> response =
                 restTemplate.exchange(
-                        "/api/v1/employees",
+                        "/v1/employees",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<Employee>>() {}
