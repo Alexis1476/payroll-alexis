@@ -1,4 +1,4 @@
-package src.test.java.ch.etml.es.payroll.controllers;
+package ch.etml.es.payroll.controllers;
 
 import ch.etml.es.payroll.entities.Employee;
 import ch.etml.es.payroll.PayrollApplication;

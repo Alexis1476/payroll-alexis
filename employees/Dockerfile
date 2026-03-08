@@ -3,7 +3,7 @@ FROM maven:3.9.5-eclipse-temurin-17 AS deps
 WORKDIR /app
 
 # Copy only pom.xml to leverage Docker cache
-COPY pom.xml .
+COPY ../department/pom.xml .
 # Resolve dependencies only
 RUN mvn dependency:go-offline
 
@@ -12,7 +12,7 @@ FROM maven:3.9.5-eclipse-temurin-17 AS build
 WORKDIR /app
 
 COPY --from=deps /root/.m2 /root/.m2
-COPY . .
+COPY .. .
 
 # Run tests
 RUN mvn test
