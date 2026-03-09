@@ -1,0 +1,55 @@
+@startuml
+
+left to right direction
+
+title Spring IoC Container - Employee API
+
+package "Spring Container" {
+
+  class ApplicationContext {
+    +scanComponents()
+    +createBean()
+    +injectDependencies()
+  }
+
+}
+
+package "Employee API" {
+
+  class Employee {
+    <<@Entity>>
+    +id : Long
+    +name : String
+  }
+
+  class EmployeeRepository {
+    <<@Repository>>
+    +save(Employee)
+    +findById(Long)
+  }
+
+  class EmployeeService {
+    <<@Service>>
+    -repository : EmployeeRepository
+    +hireEmployee(Employee)
+    +getEmployee(Long)
+  }
+
+  class EmployeeController {
+    <<@RestController>>
+    -service : EmployeeService
+    +createEmployee()
+    +getEmployee()
+  }
+
+}
+
+ApplicationContext ..> EmployeeController : createBean()
+ApplicationContext ..> EmployeeService : createBean()
+ApplicationContext ..> EmployeeRepository : createBean()
+
+EmployeeController --> EmployeeService : dependency injection
+EmployeeService --> EmployeeRepository : dependency injection
+EmployeeRepository --> Employee : manages
+
+@enduml
