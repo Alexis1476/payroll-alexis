@@ -41,10 +41,11 @@ class EmployeeGetTest {
     void given_an_existing_employee() {
         // GIVEN
         employeeRepository.deleteAll();
+        employeeRepository.flush();
 
         Employee employee = new Employee("Doe", "Supervisor");
         Employee employee2 = new Employee("Smith", "Developer");
-        existingEmployee = employeeRepository.save(employee);
+        existingEmployee = employeeRepository.saveAndFlush(employee);
         employeeRepository.save(employee2);
     }
 
