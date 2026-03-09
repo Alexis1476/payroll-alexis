@@ -46,11 +46,7 @@ class EmployeePostTest {
         // WHEN
         ResponseEntity<Employee> response =
                 restTemplate.postForEntity(
-<<<<<<< HEAD:src/test/java/ch/etml/es/payroll/Controllers/EmployeePostTest.java
-                        "/v1/employees",
-=======
                         BASE_URL,
->>>>>>> feature/putEmployee:employees/src/test/java/ch/etml/es/payroll/controllers/EmployeePostTest.java
                         request,
                         Employee.class
                 );
@@ -83,11 +79,7 @@ class EmployeePostTest {
         // WHEN
         ResponseEntity<String> response =
                 restTemplate.postForEntity(
-<<<<<<< HEAD:src/test/java/ch/etml/es/payroll/Controllers/EmployeePostTest.java
-                        "/v1/employees",
-=======
                         BASE_URL,
->>>>>>> feature/putEmployee:employees/src/test/java/ch/etml/es/payroll/controllers/EmployeePostTest.java
                         request,
                         String.class
                 );
