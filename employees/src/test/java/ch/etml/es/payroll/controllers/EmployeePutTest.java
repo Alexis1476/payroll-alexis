@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class EmployeePutTest {
 
     @Autowired
@@ -34,9 +36,10 @@ class EmployeePutTest {
     @BeforeEach
     void given_an_existing_employee() {
         employeeRepository.deleteAll();
+        employeeRepository.flush();
 
         Employee employee = new Employee("Doe", "Supervisor");
-        existingEmployee = employeeRepository.save(employee);
+        existingEmployee = employeeRepository.saveAndFlush(employee);
     }
 
     @Test
@@ -72,7 +75,7 @@ class EmployeePutTest {
     @Test
     void when_updating_nonexistent_employee_then_created() {
         // GIVEN
-        Long nonExistentId = 999L;
+        Long nonExistentId = Long.MAX_VALUE;
         Employee newEmployee = new Employee("Smith", "Engineer");
         HttpEntity<Employee> request = new HttpEntity<>(newEmployee);
 
