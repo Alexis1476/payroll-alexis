@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/employees")
@@ -55,5 +56,18 @@ public class EmployeeController {
         return ResponseEntity
                 .created(location)
                 .body(created);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+        Optional<Employee> searched = repository.findById(id);
+        // If Employee doesn't exist
+        if (!searched.isPresent()) {
+            return createEmployee(employee);
+        }
+
+        searched.get().setName(employee.getName());
+        searched.get().setRole(employee.getRole());
+        Employee updated = repository.save(searched.get());
+        return ResponseEntity.ok(updated);
     }
 }
