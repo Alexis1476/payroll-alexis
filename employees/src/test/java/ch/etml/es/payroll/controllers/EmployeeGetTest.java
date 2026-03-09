@@ -12,6 +12,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class EmployeeGetTest {
 
     private static final String BASE_URL = "/v1/employees";
@@ -39,10 +41,11 @@ class EmployeeGetTest {
     void given_an_existing_employee() {
         // GIVEN
         employeeRepository.deleteAll();
+        employeeRepository.flush();
 
         Employee employee = new Employee("Doe", "Supervisor");
         Employee employee2 = new Employee("Smith", "Developer");
-        existingEmployee = employeeRepository.save(employee);
+        existingEmployee = employeeRepository.saveAndFlush(employee);
         employeeRepository.save(employee2);
     }
 
