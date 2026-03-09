@@ -36,6 +36,7 @@ class EmployeePostTest {
     void given_an_empty_employee_database() {
         // GIVEN
         employeeRepository.deleteAll();
+        employeeRepository.flush();
     }
 
     @Test
