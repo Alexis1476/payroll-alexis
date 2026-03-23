@@ -1,6 +1,8 @@
 package ch.etml.es.payroll.entities;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -47,7 +49,9 @@ public class Department {
     public void setDescription(String description){
         this.description = description;
     }
-
+    public List<Long> getEmployeeIds(){
+        return null;
+    }
     @Override
     public boolean equals(Object o){
         if(this == o)
