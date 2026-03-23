@@ -3,6 +3,7 @@ package ch.etml.es.payroll.controllers;
 import ch.etml.es.payroll.repositories.EmployeeRepository;
 import ch.etml.es.payroll.entities.Employee;
 import ch.etml.es.payroll.services.EmployeeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,7 +45,8 @@ public class EmployeeController {
             -d "{\"name\": \"Russel George\", \"role\": \"gardener\"}"
     */
     @PostMapping("")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> createEmployee(
+            @RequestBody Employee employee) {
         Employee created = EmployeeService.create(employee);
 
         URI location = ServletUriComponentsBuilder
@@ -57,26 +59,31 @@ public class EmployeeController {
                 .created(location)
                 .body(created);
     }
+
+    /* curl sample :
+        curl -i -X PUT localhost:8080/api/v1/employees/2 ^
+            -H "Content-type:application/json" ^
+            -d "{\"name\": \"Samwise Bing\", \"role\": \"peer-to-peer\"}"
+    */
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
-        Optional<Employee> searched = repository.findById(id);
-        // If Employee doesn't exist
-        if (!searched.isPresent()) {
-            return createEmployee(employee);
+    public ResponseEntity<Employee> upsertEmployee(
+            @PathVariable Long id,
+            @RequestBody Employee employee
+    ) {
+        Optional<Employee> existing = repository.findById(id);
+
+        employee.setId(id);
+        Employee saved = repository.save(employee);
+
+        if (existing.isPresent()) {
+            return ResponseEntity.ok(saved);
+        } else {
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .build()
+                    .toUri();
+
+            return ResponseEntity.created(location).body(saved);
         }
-
-        searched.get().setName(employee.getName());
-        searched.get().setRole(employee.getRole());
-        Employee updated = repository.save(searched.get());
-        return ResponseEntity.ok(updated);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
-        Employee employee = repository.findById(id)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
-
-        repository.delete(employee);
-        return ResponseEntity.noContent().build();
     }
 }
