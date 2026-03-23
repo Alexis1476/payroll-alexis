@@ -2,6 +2,8 @@ package ch.etml.es.payroll.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +20,19 @@ public class Department {
     @GeneratedValue Long id;
     private String acronym;
     private String description;
+    private final List<Long> employeeIds = new ArrayList<>();
+
+    public boolean hasEmployee(Long employeeId) {
+        return employeeIds.contains(employeeId);
+    }
+
+    public void addEmployee(Long employeeId) {
+        employeeIds.add(employeeId);
+    }
+
+    public List<Long> getEmployeeIds() {
+        return employeeIds;
+    }
 
     public Department(){}
 
@@ -48,9 +63,6 @@ public class Department {
 
     public void setDescription(String description){
         this.description = description;
-    }
-    public List<Long> getEmployeeIds(){
-        return null;
     }
     @Override
     public boolean equals(Object o){

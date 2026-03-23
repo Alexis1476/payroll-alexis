@@ -9,22 +9,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/departments")
 public class DepartmentController {
 
     private final DepartmentRepository repository;
+    private final DepartmentService departmentService;
 
-    DepartmentController(DepartmentRepository repository){
+    DepartmentController(DepartmentRepository repository, DepartmentService departmentService) {
         this.repository = repository;
+        this.departmentService = departmentService;
     }
 
     /* curl sample :
     curl -X GET localhost:8080/api/v1/departements | jq
     */
     @GetMapping("")
-    List<Department> all(){
+    List<Department> all() {
         return repository.findAll();
     }
 
@@ -32,7 +35,7 @@ public class DepartmentController {
     curl -X GET localhost:8080/api/v1/departments/1
     */
     @GetMapping("/{id}")
-    Department one(@PathVariable Long id){
+    Department one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
@@ -55,5 +58,16 @@ public class DepartmentController {
         return ResponseEntity
                 .created(location)
                 .body(created);
+    }
+
+    @PostMapping("/{departmentId}/employees")
+    public ResponseEntity<Department> hireEmployee(@PathVariable Long departmentId, @RequestBody Map<String, Long> body) {
+        // Récupérer les informations du body
+        Long employeeId = body.get("employeeId");
+
+        // Appeler le service du departments afin de réaliser l'engagement
+        Department updated = departmentService.hireEmployee(departmentId, employeeId);
+
+        return ResponseEntity.ok(updated);
     }
 }
